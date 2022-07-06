@@ -1,0 +1,65 @@
+.calendar {
+  height: 100%;
+
+  &__header {
+    margin-top: 13vh;
+    padding-left: 10vw;
+    height: 14vh;
+    position: fixed;
+    display: flex;
+    width: 100%;
+    background-color: white;
+    z-index: 1;
+  }
+
+  &__day-label {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__week-container {
+    display: flex;
+    overflow: hidden;
+  }
+
+  &__body {
+    margin-top: 26vh;
+  }
+
+  &__week {
+    display: flex;
+    width: 100vw;
+    padding-left: 10vw;
+    position: relative;
+  }
+  &__day {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    border-left: 2px solid #808080;
+    &:first-child {
+      border-left: none;
+    }
+  }
+
+  &__time-slot {
+    flex-grow: 1;
+    height: 60px;
+    border-bottom: 2px solid #808080;
+  }
+}
+
+.day-label__day-name {
+  text-align: center;
+  font-size: 24px;
+  color: #808080;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.day-label__day-number {
+  text-align: center;
+  color: rgb(14, 12, 12);
+  font-size: 36px;
+}
