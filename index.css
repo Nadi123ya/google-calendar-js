@@ -1,6 +1,5 @@
 .page {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -87,9 +86,6 @@
   box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.5);
 }
 
-.calendar {
-  height: 100%;
-}
 .calendar__header {
   margin-top: 13vh;
   padding-left: 10vw;
@@ -107,7 +103,6 @@
 }
 .calendar__week-container {
   display: flex;
-  overflow: hidden;
 }
 .calendar__body {
   margin-top: 26vh;
@@ -164,6 +159,85 @@
 .time-slot__time {
   margin: 0;
   text-align: right;
+}
+
+.create-event {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.create-event__close-btn {
+  margin-bottom: 10px;
+  width: 30px;
+  margin-right: 0;
+  background-color: white;
+  border: none;
+  opacity: 0.5;
+  cursor: pointer;
+}
+.create-event__close-btn:hover {
+  opacity: 1;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-form__time {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-form__field {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 2px solid grey;
+}
+
+.event-time {
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.event-form__submit-btn {
+  background-color: white;
+  border: none;
+  opacity: 0.5;
+  cursor: pointer;
+}
+.event-form__submit-btn:hover {
+  opacity: 1;
+}
+
+.event {
+  background-color: #6495ed;
+}
+.event__title {
+  margin-bottom: 5px;
+}
+.event__time {
+  margin-bottom: 5px;
+}
+
+.event__container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-wrap: break-word;
+}
+
+.event__title {
+  font-size: 10px;
+}
+
+.event__time {
+  font-size: 6px;
+}
+
+.event__description {
+  font-size: 8px;
 }
 
 * {

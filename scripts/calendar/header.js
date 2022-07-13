@@ -16,7 +16,7 @@ const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 // and "day-label__day-number" (inside - number of the day);
 
 // input: empty;
-// output: undefined;
+// output: html tag;
 
 export const renderHeader = () => {
   const findCalendarHeader = document.querySelector(".calendar__header");

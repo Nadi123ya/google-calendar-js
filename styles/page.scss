@@ -1,6 +1,6 @@
 .page {
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  // overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;

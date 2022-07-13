@@ -16,7 +16,7 @@ const generateDay = () => {
   const addTimeSlot = createNumbersArray(0, 24)
     .map(
       (dataTime) =>
-        `<div class="calendar__time-slot" data-day=${dataTime}></div>`
+        `<div class="calendar__time-slot" data-time=${dataTime}></div>`
     )
     .join("");
   return addTimeSlot;
@@ -41,6 +41,27 @@ const generateDay = () => {
 
 // после того, как отрисовали всю сетку для отображаемой недели, нужно отобразить события этой недели с помощью renderEvents
 
+const hour = 60;
+const clockHeight = () =>
+  new Date().getHours() * hour + new Date().getMinutes();
+
+export const clock = () => {
+  const findWeek = document.querySelector(".calendar__week");
+  console.log(findWeek);
+  const presentTime = document.createElement("div");
+  console.log(presentTime);
+  presentTime.classList.add("clockline");
+  presentTime.style.marginTop = `${clockHeight()}px`;
+  presentTime.style.height = "1px";
+  presentTime.style.width = "100px";
+  presentTime.style.backgroundColor = "red";
+  presentTime.style.position = "absolute";
+
+  findWeek.innerHTML = presentTime;
+};
+
+clock();
+
 export const renderWeek = () => {
   const findWeek = document.querySelector(".calendar__week");
   const startOfWeek = getDisplayedWeekStart();
@@ -54,4 +75,6 @@ export const renderWeek = () => {
   findWeek.innerHTML = addDay;
 };
 
+clock();
 renderWeek();
+renderEvents();
