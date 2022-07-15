@@ -27,15 +27,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.modal__content {
-  background: #fff;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -44,9 +35,19 @@
   background-color: #cccccc45;
   z-index: 10;
 }
+.modal__content {
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.overlays {
+  position: absolute;
+  z-index: 1;
+}
 
 .popup__content {
-  position: absolute;
   background: #fff;
   padding: 16px;
   border: 1px solid #ccc;

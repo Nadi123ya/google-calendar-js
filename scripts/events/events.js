@@ -8,15 +8,18 @@ const deleteEventBtn = document.querySelector(".delete-event-btn");
 const event = document.querySelector(".event");
 
 function handleEventClick(event) {
-  const isEvent = event.target.classList.contains(".event");
+  const isEvent = event.target.classList.contains("event");
+  console.log(isEvent);
   if (!isEvent) {
     return;
   }
-  openPopup(event.style.top, event.style.height);
-  const eventId = isEvent.getAttribute("data-event-id");
+  openPopup(event.pageX, event.pageY);
+  const eventId = event.target.dataset.dataEventId;
+  console.log(eventId);
   setItem("eventIdToDelete", `${eventId}`);
 }
 
+weekElem.addEventListener("click", handleEventClick);
 // если произошел клик по событию, то нужно паказать попап с кнопкой удаления
 // установите eventIdToDelete с id события в storage
 
@@ -71,8 +74,6 @@ export const renderEvents = () => {
 
   removeEventsFromCalendar();
 
-  document.querySelectorAll(".event").forEach((event) => event.remove());
-
   // достаем из storage все события и дату понедельника отображаемой недели
   const events = getItem("events") || [];
   const startDateTime = getDisplayedWeekStart();
@@ -108,4 +109,3 @@ function onDeleteEvent() {
 }
 
 deleteEventBtn.addEventListener("click", onDeleteEvent);
-

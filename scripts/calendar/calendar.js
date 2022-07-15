@@ -46,10 +46,12 @@ const clockHeight = () =>
   new Date().getHours() * hour + new Date().getMinutes();
 
 export const clock = () => {
-  const findWeek = document.querySelector(".calendar__week");
-  console.log(findWeek);
+  const currentDate = new Date();
+  const currentDayElem = document.querySelector(
+    `.calendar__day[data-day="${currentDate.getDate()}"]`
+  );
+  console.log(currentDayElem);
   const presentTime = document.createElement("div");
-  console.log(presentTime);
   presentTime.classList.add("clockline");
   presentTime.style.marginTop = `${clockHeight()}px`;
   presentTime.style.height = "1px";
@@ -57,7 +59,7 @@ export const clock = () => {
   presentTime.style.backgroundColor = "red";
   presentTime.style.position = "absolute";
 
-  findWeek.innerHTML = presentTime;
+  // currentDayElem.append(presentTime);
 };
 
 clock();
@@ -73,8 +75,8 @@ export const renderWeek = () => {
     )
     .join("");
   findWeek.innerHTML = addDay;
+  clock();
 };
 
-clock();
 renderWeek();
 renderEvents();

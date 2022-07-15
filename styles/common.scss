@@ -20,6 +20,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #cccccc45;
+  z-index: 10;
 
   &__content {
     background: #fff;
@@ -29,19 +36,14 @@
   }
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #cccccc45;
-  z-index: 10;
+.overlays {
+  position: absolute;
+  z-index: 1;
 }
 
 .popup {
+  
   &__content {
-    position: absolute;
     background: #fff;
     padding: 16px;
     border: 1px solid #ccc;

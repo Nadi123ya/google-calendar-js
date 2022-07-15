@@ -3,24 +3,12 @@ import { renderEvents } from "./events.js";
 import { getDateTime } from "../common/time.utils.js";
 import { closeModal } from "../common/modal.js";
 
-const weekElem = document.querySelector(".calendar__week");
 const eventFormElem = document.querySelector(".event-form");
 const closeEventFormBtn = document.querySelector(".create-event__close-btn");
 
 const submitBtn = document.querySelector(".event-form__submit-btn");
-const titleInput = document.querySelector(`input[name='title']`);
-const dateInput = document.querySelector(`input[name='date']`);
-const startTimeInput = document.querySelector(`input[name='startTime']`);
-const endTimeInput = document.querySelector(`input[name='endTime']`);
-const descriptionInput = document.querySelector(`textarea[name='description']`);
 
 function clearEventForm() {
-  // ф-ция должна очистить поля формы от значений
-  // dateInput.value = "";
-  // titleInput.value = "";
-  // descriptionInput.value = "";
-  // startTimeInput.value = "";
-  // endTimeInput.value = "";
   eventFormElem.remove();
 }
 
@@ -55,10 +43,6 @@ function onCreateEvent(event) {
     end: getDateTime(formData.date, formData.endTime),
     id: Math.random(),
   };
-  // const newEventId = {
-  //   id: Math.random(),
-  //   ...newEvent,
-  // };
   events.push(newEvent);
   setItem("events", events);
   clearEventForm();
