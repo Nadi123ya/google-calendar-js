@@ -51,7 +51,6 @@ export const clock = () => {
   const currentDayElem = document.querySelector(
     `.calendar__day[data-day="${currentDate.getDate()}"]`
   );
-  console.log(currentDayElem);
   const presentTime = document.createElement("div");
   presentTime.classList.add("clockline");
   presentTime.style.marginTop = `${clockHeight()}px`;

@@ -9,7 +9,6 @@ const event = document.querySelector(".event");
 
 function handleEventClick(event) {
   const isEvent = event.target.classList.contains("event");
-  console.log(isEvent);
   if (!isEvent) {
     return;
   }
@@ -21,6 +20,39 @@ function handleEventClick(event) {
 weekElem.addEventListener("click", handleEventClick);
 // если произошел клик по событию, то нужно паказать попап с кнопкой удаления
 // установите eventIdToDelete с id события в storage
+
+const dateInput = document.querySelector(`input[name='date']`);
+const startTimeInput = document.querySelector(`input[name='startTime']`);
+const endTimeInput = document.querySelector(`input[name='endTime']`);
+
+function createEventOnWeek(event) {
+  const displayedWeek = getDisplayedWeekStart();
+  const choosedDay = event.target
+    .closest(".calendar__day")
+    .getAttribute(`data-day`);
+
+  dateInput.value = new Date(
+    `${displayedWeek.getFullYear()}-${
+      displayedWeek.getMonth() + 1
+    }-${choosedDay}`
+  ).toLocaleDateString("en-CA");
+
+  let hour = event.target.getAttribute(`data-time`);
+  if (+hour < 10) {
+    hour = "0" + event.target.getAttribute(`data-time`);
+    startTimeInput.value = hour + ":00";
+    endTimeInput.value =
+      hour === "09" ? +hour + 1 + ":00" : "0" + (+hour + 1) + ":00";
+    openModal();
+    return;
+  }
+  startTimeInput.value = +hour + ":00";
+  endTimeInput.value = +hour + 1 + ":00";
+  openModal();
+  return;
+}
+
+weekElem.addEventListener("click", createEventOnWeek);
 
 function removeEventsFromCalendar() {
   return document.querySelectorAll(".event").forEach((event) => event.remove());
@@ -98,10 +130,22 @@ function onDeleteEvent() {
   // достаем из storage массив событий и eventIdToDelete
   const events = getItem("events");
   const eventIdToDelete = Number(getItem("eventIdToDelete"));
-  console.log(eventIdToDelete);
   // удаляем из массива нужное событие и записываем в storage новый массив
+  const eventToCheck = events.filter((el) => el.id === eventIdToDelete);
+  const startTimeCheck = new Date(eventToCheck[0].start).getTime();
+  const currentTime = new Date().getTime();
+  const fifteenMinToStart = 1000 * 60 * 15;
+
+  if (
+    startTimeCheck > currentTime &&
+    startTimeCheck - currentTime <= fifteenMinToStart
+  ) {
+    alert(
+      "You can not delete the event which is starting in less then 15 min!"
+    );
+    return;
+  }
   const filterEvents = events.filter((el) => el.id !== eventIdToDelete);
-  console.log(filterEvents);
   setItem("events", filterEvents);
   // закрыть попап
   closePopup();

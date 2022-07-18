@@ -36,7 +36,6 @@ function onCreateEvent(event) {
   event.preventDefault();
   const events = getItem("events") || [];
   const formData = Object.fromEntries(new FormData(eventFormElem));
-  console.log(formData);
   const newEvent = {
     title: formData.title || "(No title)",
     description: formData.description,
@@ -44,7 +43,14 @@ function onCreateEvent(event) {
     end: getDateTime(formData.date, formData.endTime),
     id: Math.random(),
   };
-
+  // if (
+  //   events.includes(
+  //     new Date(newEvent.start).getTime() && new Date(newEvent.end).getTime()
+  //   )
+  // ) {
+  //   alert("You already have an event at this time!");
+  //   return;
+  // }
   if (new Date(newEvent.start).getTime() > new Date(newEvent.end).getTime()) {
     alert("The ending of the event cannot be greater than the beginning");
     return;
