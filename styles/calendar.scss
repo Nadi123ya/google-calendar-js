@@ -1,6 +1,5 @@
 .calendar {
-  // height: 100%;
-
+  
   &__header {
     margin-top: 13vh;
     padding-left: 10vw;
@@ -20,7 +19,6 @@
 
   &__week-container {
     display: flex;
-    // overflow: hidden;
   }
 
   &__body {

@@ -14,8 +14,7 @@ function handleEventClick(event) {
     return;
   }
   openPopup(event.pageX, event.pageY);
-  const eventId = event.target.dataset.dataEventId;
-  console.log(eventId);
+  const eventId = event.target.dataset.eventId;
   setItem("eventIdToDelete", `${eventId}`);
 }
 
@@ -98,9 +97,11 @@ export const renderEvents = () => {
 function onDeleteEvent() {
   // достаем из storage массив событий и eventIdToDelete
   const events = getItem("events");
-  const eventIdToDelete = +getItem("eventIdToDelete");
+  const eventIdToDelete = Number(getItem("eventIdToDelete"));
+  console.log(eventIdToDelete);
   // удаляем из массива нужное событие и записываем в storage новый массив
   const filterEvents = events.filter((el) => el.id !== eventIdToDelete);
+  console.log(filterEvents);
   setItem("events", filterEvents);
   // закрыть попап
   closePopup();

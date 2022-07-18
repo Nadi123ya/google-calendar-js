@@ -18,10 +18,8 @@ function renderCurrentMonth() {
   displayedMonthElem.innerHTML = getDisplayedMonth(date);
 }
 
-
 // при переключении недели обновите displayedWeekStart в storage ++
 // и перерисуйте все необходимые элементы страницы (renderHeader, renderWeek, renderCurrentMonth) ++
-
 
 const onChangeWeek = (event) => {
   const changeWeek = event.target.getAttribute("data-direction");

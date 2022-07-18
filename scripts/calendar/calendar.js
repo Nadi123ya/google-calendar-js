@@ -42,8 +42,9 @@ const generateDay = () => {
 // после того, как отрисовали всю сетку для отображаемой недели, нужно отобразить события этой недели с помощью renderEvents
 
 const hour = 60;
+const headerHeight = 57;
 const clockHeight = () =>
-  new Date().getHours() * hour + new Date().getMinutes();
+  new Date().getHours() * hour + new Date().getMinutes() - headerHeight;
 
 export const clock = () => {
   const currentDate = new Date();
@@ -59,10 +60,8 @@ export const clock = () => {
   presentTime.style.backgroundColor = "red";
   presentTime.style.position = "absolute";
 
-  // currentDayElem.append(presentTime);
+  currentDayElem.append(presentTime);
 };
-
-clock();
 
 export const renderWeek = () => {
   const findWeek = document.querySelector(".calendar__week");
@@ -78,5 +77,4 @@ export const renderWeek = () => {
   clock();
 };
 
-renderWeek();
 renderEvents();

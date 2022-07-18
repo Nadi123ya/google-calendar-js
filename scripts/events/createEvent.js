@@ -3,13 +3,13 @@ import { renderEvents } from "./events.js";
 import { getDateTime } from "../common/time.utils.js";
 import { closeModal } from "../common/modal.js";
 
-const eventFormElem = document.querySelector(".event-form");
 const closeEventFormBtn = document.querySelector(".create-event__close-btn");
 
 const submitBtn = document.querySelector(".event-form__submit-btn");
+const eventFormElem = document.querySelector(".event-form");
 
 function clearEventForm() {
-  eventFormElem.remove();
+  eventFormElem.reset();
 }
 
 function onCloseEventForm() {
@@ -36,6 +36,7 @@ function onCreateEvent(event) {
   event.preventDefault();
   const events = getItem("events") || [];
   const formData = Object.fromEntries(new FormData(eventFormElem));
+  console.log(formData);
   const newEvent = {
     title: formData.title || "(No title)",
     description: formData.description,
@@ -43,6 +44,19 @@ function onCreateEvent(event) {
     end: getDateTime(formData.date, formData.endTime),
     id: Math.random(),
   };
+
+  if (new Date(newEvent.start).getTime() > new Date(newEvent.end).getTime()) {
+    alert("The ending of the event cannot be greater than the beginning");
+    return;
+  }
+  const maxEventTime = 6;
+  if (
+    new Date(newEvent.end).getHours() - new Date(newEvent.start).getHours() >
+    maxEventTime
+  ) {
+    alert("The event duration cannot exceed 6 hours");
+    return;
+  }
   events.push(newEvent);
   setItem("events", events);
   clearEventForm();

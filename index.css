@@ -87,6 +87,10 @@
   box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.5);
 }
 
+.create-event-btn__icon {
+  margin-right: 14px;
+}
+
 .calendar__header {
   margin-top: 13vh;
   padding-left: 10vw;

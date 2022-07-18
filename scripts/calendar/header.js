@@ -45,7 +45,6 @@ const createEvent = (event) => {
 createBtn.addEventListener("click", createEvent);
 
 // const findWeek = document.querySelector(".calendar__week");
-// const createEventWeek = (event) => {
-//   openModal();
-// };
-// findWeek.addEventListener("click", createEventWeek);
+
+// findWeek.addEventListener("click", createEvent);
+
