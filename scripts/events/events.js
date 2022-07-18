@@ -134,15 +134,13 @@ function onDeleteEvent() {
   const eventToCheck = events.filter((el) => el.id === eventIdToDelete);
   const startTimeCheck = new Date(eventToCheck[0].start).getTime();
   const currentTime = new Date().getTime();
-  const fifteenMinToStart = 1000 * 60 * 15;
+  const fifteenMin = 1000 * 60 * 15;
 
   if (
     startTimeCheck > currentTime &&
-    startTimeCheck - currentTime <= fifteenMinToStart
+    startTimeCheck - currentTime <= fifteenMin
   ) {
-    alert(
-      "You can not delete the event which is starting in less then 15 min!"
-    );
+    alert("You can not delete the event that is starting in less then 15 min!");
     return;
   }
   const filterEvents = events.filter((el) => el.id !== eventIdToDelete);
