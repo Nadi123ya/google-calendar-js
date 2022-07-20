@@ -173,13 +173,12 @@
 }
 
 .create-event__close-btn {
-  margin-bottom: 10px;
   width: 30px;
-  margin-right: 0;
-  background-color: white;
-  border: none;
   opacity: 0.5;
   cursor: pointer;
+  margin-right: 0;
+  margin-bottom: 10px;
+  background-color: red;
 }
 .create-event__close-btn:hover {
   opacity: 1;

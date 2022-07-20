@@ -62,6 +62,14 @@ export const clock = () => {
   currentDayElem.append(presentTime);
 };
 
+export const currentDay = () => {
+  const currentDate = new Date();
+  const currentDayElem = document.querySelector(
+    `.calendar__day[data-day="${currentDate.getDate()}"]`
+  );
+  currentDayElem.style.backgroundColor = "rgb(255 248 5 / 46%)";
+};
+
 export const renderWeek = () => {
   const findWeek = document.querySelector(".calendar__week");
   const startOfWeek = getDisplayedWeekStart();
@@ -74,6 +82,7 @@ export const renderWeek = () => {
     .join("");
   findWeek.innerHTML = addDay;
   clock();
+  currentDay();
 };
 
 renderEvents();

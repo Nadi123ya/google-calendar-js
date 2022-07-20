@@ -43,14 +43,15 @@ function onCreateEvent(event) {
     end: getDateTime(formData.date, formData.endTime),
     id: Math.random(),
   };
-  // if (
-  //   events.includes(
-  //     new Date(newEvent.start).getTime() && new Date(newEvent.end).getTime()
-  //   )
-  // ) {
-  //   alert("You already have an event at this time!");
-  //   return;
-  // }
+  const crossingEvent = events.find(
+    (event) =>
+      (newEvent.start <= event.start && newEvent.end >= event.start) ||
+      (newEvent.start >= event.start && newEvent.start <= event.end)
+  );
+  if (events.includes(crossingEvent)) {
+    alert("You have an event at this time already!");
+    return;
+  }
   if (new Date(newEvent.start).getTime() > new Date(newEvent.end).getTime()) {
     alert("The ending of the event cannot be greater than the beginning");
     return;
@@ -72,7 +73,8 @@ function onCreateEvent(event) {
 
 export function initEventForm() {
   // подпишитесь на сабмит формы и на закрытие формы
+  eventFormElem.addEventListener('submit', onCreateEvent);
   closeEventFormBtn.addEventListener("click", onCloseEventForm);
-  submitBtn.addEventListener("click", onCreateEvent);
+  // submitBtn.addEventListener("click", onCreateEvent);
 }
 initEventForm();

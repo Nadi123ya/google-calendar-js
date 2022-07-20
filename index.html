@@ -45,7 +45,7 @@
   <div class="modal hidden overlay">
     <div class="modal__content">
       <div class="create-event">
-        <button class="create-event__close-btn">+</button>
+        <button class="create-event__close-btn">x</button>
         <form class="event-form">
           <input type="text" name="title" placeholder="Title" class="event-form__field" />
           <div class="event-form__time">
@@ -63,7 +63,14 @@
   <div class="popup hidden overlays">
     <!-- <div class="popup__overlay"></div> -->
     <div class="popup__content">
-      <button class="delete-event-btn">Delete</button>
+      <div class="popup__buttons">
+        <button class="delete__event-btn">Delete</button>
+        <button class="update__event-btn">Update</button>
+        <button class="close__event-btn">Close</button>
+
+
+      </div>
+      <div class="popup__description"></div>
     </div>
   </div>
   <script src="scripts/index.js" type="module"></script>

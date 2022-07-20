@@ -4,55 +4,110 @@ import { openPopup, closePopup } from "../common/popup.js";
 import { openModal } from "../common/modal.js";
 
 const weekElem = document.querySelector(".calendar__week");
-const deleteEventBtn = document.querySelector(".delete-event-btn");
-const event = document.querySelector(".event");
+const deleteEventBtn = document.querySelector(".delete__event-btn");
+const closeEventBtn = document.querySelector(".close__event-btn");
+closeEventBtn.addEventListener("click", closePopup);
+
+const formater = new Intl.DateTimeFormat("en-GB", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+});
+const getTime = (date) => formater.format(date);
+
+const popupDescriptionElem = document.querySelector(".popup__description");
+const updateEventBtn = document.querySelector(".update__event-btn");
+
+function getDateEvent(selectedDate) {
+  const date = new Date(selectedDate);
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const timeDigits = 10;
+
+  if (month < timeDigits) {
+    month = "0" + month;
+  }
+  if (day < timeDigits) {
+    day = "0" + day;
+  }
+  return year + "-" + month + "-" + day;
+}
+
+export const updateEvent = () => {
+  openModal();
+
+  const events = getItem("events") || [];
+  const eventIdToDelete = getItem("eventIdToDelete");
+  const filteredEvent = events.filter((el) => el.id === eventIdToDelete);
+
+  document.querySelector('.event-form__field[type="text"]').value =
+    filteredEvent.title;
+  document.querySelector('.event-form__field[type="date"]').value =
+    getDateEvent(new Date(filteredEvent.start));
+
+  document.querySelector('.event-form__field[name="startTime"]').value =
+    getTime(filteredEvent.start);
+  document.querySelector('.event-form__field[name="endTime"]').value = getTime(
+    filteredEvent.end
+  );
+  document.querySelector('.event-form__field[name="description"]').value =
+    filteredEvent.description;
+
+  // setItem("eventIdToUpdate", eventIdToDelete);
+  console.log(eventIdToDelete);
+};
+updateEventBtn.addEventListener("click", updateEvent);
 
 function handleEventClick(event) {
   const isEvent = event.target.classList.contains("event");
+  console.log(isEvent);
+
   if (!isEvent) {
-    return;
-  }
-  openPopup(event.pageX, event.pageY);
-  const eventId = event.target.dataset.eventId;
-  setItem("eventIdToDelete", `${eventId}`);
-}
+    const dateInput = document.querySelector(`input[name='date']`);
+    const startTimeInput = document.querySelector(`input[name='startTime']`);
+    const endTimeInput = document.querySelector(`input[name='endTime']`);
+    const displayedWeek = getDisplayedWeekStart();
+    const choosedDay = event.target
+      .closest(".calendar__day")
+      .getAttribute(`data-day`);
 
-weekElem.addEventListener("click", handleEventClick);
-// если произошел клик по событию, то нужно паказать попап с кнопкой удаления
-// установите eventIdToDelete с id события в storage
+    dateInput.value = new Date(
+      `${displayedWeek.getFullYear()}-${
+        displayedWeek.getMonth() + 1
+      }-${choosedDay}`
+    ).toLocaleDateString("en-CA");
 
-const dateInput = document.querySelector(`input[name='date']`);
-const startTimeInput = document.querySelector(`input[name='startTime']`);
-const endTimeInput = document.querySelector(`input[name='endTime']`);
-
-function createEventOnWeek(event) {
-  const displayedWeek = getDisplayedWeekStart();
-  const choosedDay = event.target
-    .closest(".calendar__day")
-    .getAttribute(`data-day`);
-
-  dateInput.value = new Date(
-    `${displayedWeek.getFullYear()}-${
-      displayedWeek.getMonth() + 1
-    }-${choosedDay}`
-  ).toLocaleDateString("en-CA");
-
-  let hour = event.target.getAttribute(`data-time`);
-  if (+hour < 10) {
-    hour = "0" + event.target.getAttribute(`data-time`);
+    let hour = event.target.dataset.time;
+    if (+hour < 10) {
+      hour = "0" + event.target.dataset.time;
+      startTimeInput.value = hour + ":00";
+      endTimeInput.value =
+        hour === "09" ? +hour + 1 + ":00" : "0" + (+hour + 1) + ":00";
+      openModal();
+      return;
+    }
     startTimeInput.value = hour + ":00";
-    endTimeInput.value =
-      hour === "09" ? +hour + 1 + ":00" : "0" + (+hour + 1) + ":00";
+    endTimeInput.value = +hour + 1 + ":00";
     openModal();
     return;
   }
-  startTimeInput.value = +hour + ":00";
-  endTimeInput.value = +hour + 1 + ":00";
-  openModal();
-  return;
-}
 
-weekElem.addEventListener("click", createEventOnWeek);
+  openPopup(event.pageX, event.pageY);
+  const eventId = event.target.dataset.eventId;
+  setItem("eventIdToDelete", `${eventId}`);
+
+  const events = getItem("events") || [];
+  const filteredEvent = events.filter((el) => el.id === eventId);
+  popupDescriptionElem.innerHTML = `
+    <p class="popup__title">${filteredEvent.title}</p>
+    <p class="popup__event">${getTime(filteredEvent.start)} - ${getTime(
+    filteredEvent.end
+  )}</p>
+    <p class="popup__text">${filteredEvent.description}</p>
+    `;
+}
+weekElem.addEventListener("click", handleEventClick);
 
 function removeEventsFromCalendar() {
   return document.querySelectorAll(".event").forEach((event) => event.remove());
@@ -80,7 +135,7 @@ const createEventElement = (event) => {
   eventTitle.textContent = title;
 
   const eventTime = document.createElement("div");
-  eventTime.textContent = `${start.getHours()}:${start.getMinutes()} - ${end.getHours()}:${end.getMinutes()}`;
+  eventTime.textContent = `${getTime(start)} - ${getTime(end)}`;
   eventTime.classList.add("event__time");
 
   const eventDescription = document.createElement("div");
