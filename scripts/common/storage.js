@@ -6,7 +6,7 @@ const storage = {
   // хранит массив всех событий
   events: [],
   // это все данные, которые вам нужно хранить для работы приложения
-  // eventIdToUpdate: null,
+  eventIdToUpdate: null,
 };
 
 export const setItem = (key, value) => {

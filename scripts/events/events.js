@@ -1,7 +1,7 @@
 import { getDisplayedWeekStart, getItem, setItem } from "../common/storage.js";
 import shmoment from "../common/shmoment.js";
 import { openPopup, closePopup } from "../common/popup.js";
-import { openModal } from "../common/modal.js";
+import { closeModal, openModal } from "../common/modal.js";
 
 const weekElem = document.querySelector(".calendar__week");
 const deleteEventBtn = document.querySelector(".delete__event-btn");
@@ -38,8 +38,13 @@ export const updateEvent = () => {
   openModal();
 
   const events = getItem("events") || [];
+  console.log(events);
   const eventIdToDelete = getItem("eventIdToDelete");
-  const filteredEvent = events.filter((el) => el.id === eventIdToDelete);
+  console.log(eventIdToDelete);
+  const [filteredEvent] = events.filter(
+    ({ id }) => id !== String(eventIdToDelete)
+  );
+  console.log(filteredEvent);
 
   document.querySelector('.event-form__field[type="text"]').value =
     filteredEvent.title;
@@ -53,9 +58,7 @@ export const updateEvent = () => {
   );
   document.querySelector('.event-form__field[name="description"]').value =
     filteredEvent.description;
-
-  // setItem("eventIdToUpdate", eventIdToDelete);
-  console.log(eventIdToDelete);
+  setItem("eventIdToUpdate", eventIdToDelete);
 };
 updateEventBtn.addEventListener("click", updateEvent);
 
@@ -96,9 +99,8 @@ function handleEventClick(event) {
   openPopup(event.pageX, event.pageY);
   const eventId = event.target.dataset.eventId;
   setItem("eventIdToDelete", `${eventId}`);
-
   const events = getItem("events") || [];
-  const filteredEvent = events.filter((el) => el.id === eventId);
+  const [filteredEvent] = events.filter(({ id }) => id !== String(eventId));
   popupDescriptionElem.innerHTML = `
     <p class="popup__title">${filteredEvent.title}</p>
     <p class="popup__event">${getTime(filteredEvent.start)} - ${getTime(
@@ -106,6 +108,7 @@ function handleEventClick(event) {
   )}</p>
     <p class="popup__text">${filteredEvent.description}</p>
     `;
+  setItem("eventIdToUpdate", eventIdToDelete);
 }
 weekElem.addEventListener("click", handleEventClick);
 
@@ -184,9 +187,11 @@ export const renderEvents = () => {
 function onDeleteEvent() {
   // достаем из storage массив событий и eventIdToDelete
   const events = getItem("events");
+  console.log(events);
   const eventIdToDelete = Number(getItem("eventIdToDelete"));
   // удаляем из массива нужное событие и записываем в storage новый массив
   const eventToCheck = events.filter((el) => el.id === eventIdToDelete);
+  console.log(eventToCheck);
   const startTimeCheck = new Date(eventToCheck[0].start).getTime();
   const currentTime = new Date().getTime();
   const fifteenMin = 1000 * 60 * 15;
@@ -199,7 +204,9 @@ function onDeleteEvent() {
     return;
   }
   const filterEvents = events.filter((el) => el.id !== eventIdToDelete);
+  console.log(filterEvents);
   setItem("events", filterEvents);
+  console.log(events);
   // закрыть попап
   closePopup();
   // перерисовать события на странице в соответствии с новым списком событий в storage (renderEvents)
