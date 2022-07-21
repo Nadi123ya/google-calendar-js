@@ -133,18 +133,28 @@
   border-bottom: 2px solid #808080;
 }
 
-.day-label__day-name {
+.day-label {
   text-align: center;
   font-size: 24px;
   color: #808080;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
-
+.day-label__day-name {
+  font-size: 14px;
+}
+.day-label__day-name_active {
+  color: #1a73e8;
+}
 .day-label__day-number {
   text-align: center;
   color: #0e0c0c;
   font-size: 36px;
+}
+.day-label__day-number_active {
+  background-color: #1a73e8;
+  border-radius: 50%;
+  color: #ffffff;
 }
 
 .calendar__time-scale {

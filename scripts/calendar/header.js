@@ -18,6 +18,13 @@ const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 // input: empty;
 // output: html tag;
 
+const getCurrentDay = (day, className) => {
+  return new Date(new Date().toDateString()).getTime() === day.getTime()
+    ? `${className} ${className}_active`
+    : className;
+};
+// return new Date(new Date().toDateString()).getTime() === day.getTime()
+
 export const renderHeader = () => {
   const findCalendarHeader = document.querySelector(".calendar__header");
   const startOfWeek = getDisplayedWeekStart();
@@ -25,8 +32,13 @@ export const renderHeader = () => {
     .map(
       (dayLabel) => `<div 
   class="calendar__day-label day-label">
-  <span class="day-label__day-name">${daysOfWeek[dayLabel.getDay()]}</span>
-  <span class="day-label__day-number">${dayLabel.getDate()}</span>
+  <span class="${getCurrentDay(dayLabel, "day-label__day-name")}">${
+        daysOfWeek[dayLabel.getDay()]
+      }</span>
+  <span class="${getCurrentDay(
+    dayLabel,
+    "day-label__day-number"
+  )}">${dayLabel.getDate()}</span>
   </div>`
     )
     .join("");
@@ -47,4 +59,3 @@ createBtn.addEventListener("click", createEvent);
 // const findWeek = document.querySelector(".calendar__week");
 
 // findWeek.addEventListener("click", createEvent);
-
