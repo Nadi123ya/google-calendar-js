@@ -80,7 +80,9 @@ function handleEventClick(event) {
     const { eventId } = event.target.dataset
     setItem('eventIdToDelete', `${eventId}`)
     const events = getItem('events') || []
-    const [filteredEvent] = events.filter(({ id }) => id !== String(eventId))
+
+    const [filteredEvent] = events.filter(({ id }) => id === Number(eventId))
+    console.log([filteredEvent])
     popupDescriptionElem.innerHTML = `
     <p class="popup__title">${filteredEvent.title}</p>
     <p class="popup__event">${getTime(filteredEvent.start)} - ${getTime(
@@ -176,7 +178,6 @@ function onDeleteEvent() {
     const eventIdToDelete = Number(getItem('eventIdToDelete'))
     // удаляем из массива нужное событие и записываем в storage новый массив
     const [eventToCheck] = events.filter((el) => el.id === eventIdToDelete)
-    console.log(eventToCheck)
     const startTimeCheck = new Date(eventToCheck.start).getTime()
     const currentTime = new Date().getTime()
     const fifteenMin = 1000 * 60 * 15
