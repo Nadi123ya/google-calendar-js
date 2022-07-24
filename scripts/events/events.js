@@ -78,6 +78,8 @@ function handleEventClick(event) {
     openPopup(event.pageX, event.pageY)
 
     const { eventId } = event.target.dataset
+    console.log({ eventId })
+
     setItem('eventIdToDelete', `${eventId}`)
     const events = getItem('events') || []
 
