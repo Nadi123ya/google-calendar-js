@@ -1,26 +1,24 @@
-import { getItem } from "../common/storage.js";
-import { generateWeekRange } from "../common/time.utils.js";
-import { renderEvents } from "../events/events.js";
-import { createNumbersArray } from "../common/createNumbersArray.js";
-import { getDisplayedWeekStart } from "../common/storage.js";
+// import { getItem } from "../common/storage.js";
+import { generateWeekRange } from '../common/time.utils.js'
+import { renderEvents } from '../events/events.js'
+import { createNumbersArray } from '../common/createNumbersArray.js'
+import { getDisplayedWeekStart } from '../common/storage.js'
 
 // функция должна сгенерировать и вернуть разметку дня в виде строки ++
 // разметка состоит из 24 часовых временных слотов (.calendar__time-slot) ++
-
 // 1. add divs from 1-24 using createNumbersArray
-
 // input: empty
 // output html tag div
 
 const generateDay = () => {
-  const addTimeSlot = createNumbersArray(0, 24)
-    .map(
-      (dataTime) =>
-        `<div class="calendar__time-slot" data-time=${dataTime}></div>`
-    )
-    .join("");
-  return addTimeSlot;
-};
+    const addTimeSlot = createNumbersArray(0, 24)
+        .map(
+            (dataTime) =>
+                `<div class="calendar__time-slot" data-time=${dataTime}></div>`
+        )
+        .join('')
+    return addTimeSlot
+}
 
 // 1. find element with (.calendar__week).
 // 2. add elements using  generateWeekRange(startOfWeek)
@@ -41,48 +39,46 @@ const generateDay = () => {
 
 // после того, как отрисовали всю сетку для отображаемой недели, нужно отобразить события этой недели с помощью renderEvents
 
-const hour = 60;
-const headerHeight = 57;
-const clockHeight = () =>
-  new Date().getHours() * hour + new Date().getMinutes() - headerHeight;
+const hour = 60
+const clockHeight = () => new Date().getHours() * hour + new Date().getMinutes()
 
 export const clock = () => {
-  const currentDate = new Date();
-  const currentDayElem = document.querySelector(
-    `.calendar__day[data-day="${currentDate.getDate()}"]`
-  );
-  const presentTime = document.createElement("div");
-  presentTime.classList.add("clockline");
-  presentTime.style.marginTop = `${clockHeight()}px`;
-  presentTime.style.height = "1px";
-  presentTime.style.width = "100px";
-  presentTime.style.backgroundColor = "red";
-  presentTime.style.position = "absolute";
+    const currentDate = new Date()
+    const currentDayElem = document.querySelector(
+        `.calendar__day[data-day="${currentDate.getDate()}"]`
+    )
+    const presentTime = document.createElement('div')
+    presentTime.classList.add('clockline')
+    presentTime.style.marginTop = `${clockHeight()}px`
+    presentTime.style.height = '1px'
+    presentTime.style.width = '100px'
+    presentTime.style.backgroundColor = 'red'
+    presentTime.style.position = 'absolute'
 
-  currentDayElem.append(presentTime);
-};
+    currentDayElem.append(presentTime)
+}
 
 export const currentDay = () => {
-  const currentDate = new Date();
-  const currentDayElem = document.querySelector(
-    `.calendar__day[data-day="${currentDate.getDate()}"]`
-  );
-  currentDayElem.style.backgroundColor = "rgb(255 248 5 / 46%)";
-};
+    const currentDate = new Date()
+    const currentDayElem = document.querySelector(
+        `.calendar__day[data-day="${currentDate.getDate()}"]`
+    )
+    currentDayElem.style.backgroundColor = '#fff80575'
+}
 
 export const renderWeek = () => {
-  const findWeek = document.querySelector(".calendar__week");
-  const startOfWeek = getDisplayedWeekStart();
-  const dayTimeScale = generateDay();
-  const addDay = generateWeekRange(startOfWeek)
-    .map(
-      (day) =>
-        `<div class="calendar__day" data-day="${day.getDate()}">${dayTimeScale}</div>`
-    )
-    .join("");
-  findWeek.innerHTML = addDay;
-  clock();
-  currentDay();
-};
+    const findWeek = document.querySelector('.calendar__week')
+    const startOfWeek = getDisplayedWeekStart()
+    const dayTimeScale = generateDay()
+    const addDay = generateWeekRange(startOfWeek)
+        .map(
+            (day) =>
+                `<div class="calendar__day" data-day="${day.getDate()}">${dayTimeScale}</div>`
+        )
+        .join('')
+    findWeek.innerHTML = addDay
+    clock()
+    currentDay()
+}
 
-renderEvents();
+renderEvents()

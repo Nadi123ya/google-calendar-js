@@ -1,11 +1,11 @@
 .button {
   height: 40px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid $border-color-grey;
   outline: none;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .icon-button {
@@ -20,18 +20,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
+  width: 1440px;
   height: 100vh;
-  background-color: #cccccc45;
+  background-color: $modal-background-color;
   z-index: 10;
 
   &__content {
-    background: #fff;
+    background: $color-white;
     padding: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid $border-color-grey;
     border-radius: 8px;
   }
 }
@@ -44,9 +41,9 @@
 .popup {
   
   &__content {
-    background: #fff;
+    background-color: $background-color-white;
     padding: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid $border-color-grey;
     border-radius: 8px;
   }
 }

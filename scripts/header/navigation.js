@@ -1,55 +1,51 @@
 /* eslint-disable consistent-return */
 
-import { getDisplayedWeekStart, getItem, setItem } from "../common/storage.js";
-import { renderWeek } from "../calendar/calendar.js";
-import { renderHeader } from "../calendar/header.js";
-import { getStartOfWeek, getDisplayedMonth } from "../common/time.utils.js";
+import { getDisplayedWeekStart, getItem, setItem } from '../common/storage.js'
+import { renderWeek } from '../calendar/calendar.js'
+import { renderHeader } from '../calendar/header.js'
+import { getStartOfWeek, getDisplayedMonth } from '../common/time.utils.js'
 
-const navElem = document.querySelector(".navigation");
+const navElem = document.querySelector('.navigation')
 const displayedMonthElem = document.querySelector(
-  ".navigation__displayed-month"
-);
+    '.navigation__displayed-month'
+)
 
 // отрисовать месяц, к которому относиться текущая неделя (getDisplayedMonth)
 // вставить в .navigation__displayed-month
 
 function renderCurrentMonth() {
-  const date = getDisplayedWeekStart();
-  displayedMonthElem.innerHTML = getDisplayedMonth(date);
+    const date = getDisplayedWeekStart()
+    displayedMonthElem.innerHTML = getDisplayedMonth(date)
 }
 
 // при переключении недели обновите displayedWeekStart в storage ++
 // и перерисуйте все необходимые элементы страницы (renderHeader, renderWeek, renderCurrentMonth) ++
-
 const onChangeWeek = (event) => {
-  const changeWeek = event.target.getAttribute("data-direction");
-  const week = 7;
-  const day = getDisplayedWeekStart().getDate();
-  const month = getDisplayedWeekStart().getMonth();
-  const year = getDisplayedWeekStart().getFullYear();
+    const switchArrow = event.target.closest('button')
 
-  const renewCalendar = () => {
-    renderHeader();
-    renderWeek();
-    renderCurrentMonth();
-  };
+    if (switchArrow === null) {
+        return
+    }
 
-  if (changeWeek === null) return;
-  if (changeWeek === "prev") {
-    setItem("displayedWeekStart", new Date(year, month, day - week));
-    renewCalendar();
-  }
-  if (changeWeek === "next") {
-    setItem("displayedWeekStart", new Date(year, month, day + week));
-    renewCalendar();
-  }
-  if (changeWeek === "today") {
-    setItem("displayedWeekStart", new Date());
-    renewCalendar();
-  }
-};
+    const mondayCurrentWeek = getDisplayedWeekStart()
+    const day = new Date(mondayCurrentWeek).getDate()
+    const week = 7
+
+    const changedMonth =
+        // eslint-disable-next-line no-nested-ternary
+        switchArrow.dataset.direction === 'next'
+            ? new Date(mondayCurrentWeek).setDate(day + week)
+            : switchArrow.dataset.direction === 'prev'
+            ? new Date(mondayCurrentWeek).setDate(day - week)
+            : getStartOfWeek(new Date())
+
+    setItem('displayedWeekStart', new Date(changedMonth))
+    renderHeader()
+    renderCurrentMonth()
+    renderWeek()
+}
 
 export const initNavigation = () => {
-  renderCurrentMonth();
-  navElem.addEventListener("click", onChangeWeek);
-};
+    renderCurrentMonth()
+    navElem.addEventListener('click', onChangeWeek)
+}

@@ -1,4 +1,4 @@
-import { createNumbersArray } from "../common/createNumbersArray.js";
+import { createNumbersArray } from '../common/createNumbersArray.js'
 
 // 1. Find element .calendar__time-scale;
 // 2. add divs with .time-slot
@@ -6,22 +6,24 @@ import { createNumbersArray } from "../common/createNumbersArray.js";
 // 3 add in divs with .time-slot spans with .time-slot__time
 
 // ф-ция должна генерировать разметку для боковой шкалы времени (24 часа) ++
-// полученную разметку вставьте на страницу с помощью innerHTML в .calendar__time-scale ++ 
+// полученную разметку вставьте на страницу с помощью innerHTML в .calendar__time-scale ++
 
 // input: empty;
 // output: undefined;
 
 export const renderTimescale = () => {
-  const findTimeScale = document.querySelector(".calendar__time-scale");
-  const timeEl = createNumbersArray(1, 24)
-    .map(
-      (time) =>
-        `<div 
+    const findTimeScale = document.querySelector('.calendar__time-scale')
+    const timeEl = createNumbersArray(0, 24)
+        .map(
+            (time) =>
+                `<div 
     class="time-slot"><span
-    class="time-slot__time">${time < 12 ? time + " AM" : time + " PM"}</span>
+    class="time-slot__time">${
+        time >= 0 && time <= 9 ? `0${time}:00` : `${time}:00`
+    }</span>
     </div>`
-    )
-    .join("");
-  findTimeScale.innerHTML = timeEl;
-};
-renderTimescale();
+        )
+        .join('')
+    findTimeScale.innerHTML = timeEl
+}
+renderTimescale()

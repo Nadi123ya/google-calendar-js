@@ -1,13 +1,29 @@
 .calendar {
-  &__header {
-    margin-top: 13vh;
-    padding-left: 10vw;
-    height: 14vh;
-    position: fixed;
-    display: flex;
+  margin: 0 auto;
+  max-width: 1440px;
+  width: 100%;
+
+  &__line {
+    border-bottom: 1px solid $border-color-grey;
     width: 100%;
-    background-color: white;
+    opacity: 0.1;
+  }
+
+  &__header {
+    display: flex;
+    position: sticky;
+    top: 60px;
+    padding-left: 60px;
+    padding-top: 20px;
+    justify-content: space-around;
+    background-color:$background-color-white;
     z-index: 1;
+  }
+
+  &__body {
+    position: relative;
+    top: 62px;
+    padding-bottom: 40px;
   }
 
   &__day-label {
@@ -20,54 +36,50 @@
     display: flex;
   }
 
-  &__body {
-    margin-top: 26vh;
-  }
-
   &__week {
     display: flex;
-    width: 100vw;
-    padding-left: 10vw;
-    position: relative;
+    flex-grow: 1;
+    justify-content: space-between;
   }
+  
   &__day {
     display: flex;
     flex-direction: column;
     flex: 1 1 0;
-    border-left: 2px solid #808080;
-    &:first-child {
-      border-left: none;
-    }
+    border: 1px solid $border-color-grey;
   }
 
   &__time-slot {
     flex-grow: 1;
     height: 60px;
-    border-bottom: 2px solid #808080;
+    border-bottom: 2px solid $border-color-grey;
   }
 }
 
 .day-label {
   text-align: center;
   font-size: 24px;
-  color: #808080;
+  color: $day-label-color;
   text-transform: uppercase;
   margin-bottom: 10px;
+
   &__day-name {
     font-size: 14px;
 
     &_active {
-      color: #1a73e8;
+      color: $current-day-color;
     }
   }
+
   &__day-number {
     text-align: center;
-    color: rgb(14, 12, 12);
+    color: $color-black;
     font-size: 36px;
   }
+
   &__day-number_active {
-    background-color: #1a73e8;
+    background-color: $current-day-color;
     border-radius: 50%;
-    color: #ffffff;
+    color: $color-white;
   }
 }
