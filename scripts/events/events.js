@@ -155,6 +155,7 @@ export const renderEvents = () => {
 
     // достаем из storage все события и дату понедельника отображаемой недели
     const events = getItem('events') || []
+    console.log(events)
     const startDateTime = getDisplayedWeekStart()
     const endDateTime = shmoment(startDateTime).add('days', 7).result()
 
@@ -260,10 +261,6 @@ export const addUpdatedEvent = (event) => {
     }
 
     const previousEvent = events.find((el) => el.id === changedEvent.id)
-
-    // const [previousEvent] = events.filter(
-    //     ({ id }) => id !== String(changedEvent)
-    // )
 
     console.log(previousEvent)
 

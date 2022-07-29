@@ -6,20 +6,42 @@ const storage = {
     // хранит массив всех событий
     events: [],
     // это все данные, которые вам нужно хранить для работы приложения
-    eventIdToUpdate: null,
+    // eventIdToUpdate: null,
 }
+// export function getItem(key) {
+//     return JSON.parse(localStorage.getItem(key))
+// }
+
+// export function setItem(key, value) {
+//     const isArray = key === 'events' && !Array.isArray(value)
+//     let events = value
+
+//     if (isArray) {
+//         events = getItem(key)
+//         events.push(value)
+//     }
+
+//     localStorage.setItem(key, JSON.stringify(events))
+// }
 
 export const setItem = (key, value) => {
-    return Object.assign(storage, { [key]: value })
-    // ф-ция должна устанавливать значения в объект storage
+    localStorage.clear()
+    localStorage.setItem(key, JSON.stringify(value))
 }
+export const getItem = (key) => JSON.parse(localStorage.getItem(key))
 
-export const getItem = (key) => storage[key]
-// ф-ция должна возвращать по ключу значения из объекта storage
+console.log(localStorage)
 
-export const getDisplayedWeekStart = () => {
-    return new Date(getItem('displayedWeekStart'))
-}
+// export const setItem = (key, value) => {
+//     return Object.assign(storage, { [key]: value })
+//     // ф-ция должна устанавливать значения в объект storage
+// }
+
+// export const getItem = (key) => storage[key]
+// // // ф-ция должна возвращать по ключу значения из объекта storage
+
+export const getDisplayedWeekStart = () =>
+    new Date(JSON.parse(localStorage.getItem('displayedWeekStart')))
 
 // пример объекта события
 const eventExample = {

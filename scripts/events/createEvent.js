@@ -65,7 +65,9 @@ function onCreateEvent(event) {
         return
     }
     events.push(newEvent)
+    console.log(events)
     setItem('events', events)
+    console.log(events)
     onCloseEventForm()
     renderEvents()
 }

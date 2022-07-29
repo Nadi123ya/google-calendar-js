@@ -35,7 +35,7 @@
 //     closePopup()
 //     const events = getItem('events') || []
 
-//     const eventIdToDelete = getItem('eventIdToDelete')
+//     const  = getItem('eventIdToDelete')
 
 //     const [filteredEvent] = events.filter(
 //         ({ id }) => id !== String(eventIdToDelete)
