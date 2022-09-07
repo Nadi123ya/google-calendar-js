@@ -8,21 +8,6 @@ const storage = {
     // это все данные, которые вам нужно хранить для работы приложения
     // eventIdToUpdate: null,
 }
-// export function getItem(key) {
-//     return JSON.parse(localStorage.getItem(key))
-// }
-
-// export function setItem(key, value) {
-//     const isArray = key === 'events' && !Array.isArray(value)
-//     let events = value
-
-//     if (isArray) {
-//         events = getItem(key)
-//         events.push(value)
-//     }
-
-//     localStorage.setItem(key, JSON.stringify(events))
-// }
 
 export const setItem = (key, value) => {
     localStorage.clear()

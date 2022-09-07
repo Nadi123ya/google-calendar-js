@@ -162,7 +162,12 @@ export const renderEvents = () => {
     // фильтруем события, оставляем только те, что входят в текущую неделю
     events
         .filter((event) => {
-            return event.start >= startDateTime && event.end < endDateTime
+            console.log(new Date(event.start))
+            console.log(startDateTime)
+            return (
+                new Date(event.start) >= startDateTime &&
+                new Date(event.end) < endDateTime
+            )
         })
         .forEach((event) => {
             const { start } = event
