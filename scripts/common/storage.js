@@ -9,24 +9,23 @@ const storage = {
     // eventIdToUpdate: null,
 }
 
-export const setItem = (key, value) => {
-    localStorage.clear()
-    localStorage.setItem(key, JSON.stringify(value))
-}
-export const getItem = (key) => JSON.parse(localStorage.getItem(key))
-
-console.log(localStorage)
-
 // export const setItem = (key, value) => {
-//     return Object.assign(storage, { [key]: value })
-//     // ф-ция должна устанавливать значения в объект storage
+//     localStorage.clear()
+//     localStorage.setItem(key, JSON.stringify(value))
 // }
+// export const getItem = (key) => JSON.parse(localStorage.getItem(key))
 
-// export const getItem = (key) => storage[key]
-// // // ф-ция должна возвращать по ключу значения из объекта storage
+// console.log(localStorage)
 
-export const getDisplayedWeekStart = () =>
-    new Date(JSON.parse(localStorage.getItem('displayedWeekStart')))
+export const setItem = (key, value) => {
+    return Object.assign(storage, { [key]: value })
+    // ф-ция должна устанавливать значения в объект storage
+}
+
+export const getItem = (key) => storage[key]
+// // ф-ция должна возвращать по ключу значения из объекта storage
+
+export const getDisplayedWeekStart = () => getItem('displayedWeekStart')
 
 // пример объекта события
 const eventExample = {

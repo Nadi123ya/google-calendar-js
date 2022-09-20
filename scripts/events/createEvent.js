@@ -64,10 +64,16 @@ function onCreateEvent(event) {
         alert('The event duration cannot exceed 6 hours')
         return
     }
+
     events.push(newEvent)
-    console.log(events)
     setItem('events', events)
-    console.log(events)
+
+    // createEvent(newEvent)
+    //     .then(() => getEvents())
+    //     .then(() => {
+    //         onCloseEventForm()
+    //         renderEvents()
+    //     })
     onCloseEventForm()
     renderEvents()
 }
