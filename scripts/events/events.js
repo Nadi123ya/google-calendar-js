@@ -43,7 +43,6 @@ function getDateEvent(selectedDate) {
 function handleEventClick(event) {
     const isEvent = event.target.closest('.event')
 
-    console.log(isEvent)
 
     if (!isEvent) {
         const dateInput = document.querySelector(`input[name='date']`)
@@ -84,7 +83,6 @@ function handleEventClick(event) {
     const events = getItem('events') || []
 
     const [filteredEvent] = events.filter(({ id }) => id === Number(eventId))
-    console.log([filteredEvent])
     popupDescriptionElem.innerHTML = `
     <p class="popup__title">${filteredEvent.title}</p>
     <p class="popup__event">${getTime(filteredEvent.start)} - ${getTime(

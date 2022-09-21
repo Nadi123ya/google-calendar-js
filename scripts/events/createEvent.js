@@ -67,13 +67,6 @@ function onCreateEvent(event) {
 
     events.push(newEvent)
     setItem('events', events)
-
-    // createEvent(newEvent)
-    //     .then(() => getEvents())
-    //     .then(() => {
-    //         onCloseEventForm()
-    //         renderEvents()
-    //     })
     onCloseEventForm()
     renderEvents()
 }
