@@ -58,8 +58,6 @@ export const clock = () => {
     currentDayElem.append(presentTime)
 }
 
-renderEvents()
-
 export const renderWeek = () => {
     const findWeek = document.querySelector('.calendar__week')
     const startOfWeek = getDisplayedWeekStart()
@@ -71,5 +69,6 @@ export const renderWeek = () => {
         )
         .join('')
     findWeek.innerHTML = addDay
+    renderEvents()
     clock()
 }

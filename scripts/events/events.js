@@ -42,8 +42,6 @@ function getDateEvent(selectedDate) {
 
 function handleEventClick(event) {
     const isEvent = event.target.closest('.event')
-
-
     if (!isEvent) {
         const dateInput = document.querySelector(`input[name='date']`)
         const startTimeInput = document.querySelector(`input[name='startTime']`)
@@ -77,8 +75,6 @@ function handleEventClick(event) {
     openPopup(event.pageX, event.pageY)
 
     const { eventId } = event.target.dataset
-    console.log({ eventId })
-
     setItem('eventIdToDelete', `${eventId}`)
     const events = getItem('events') || []
 
@@ -153,15 +149,12 @@ export const renderEvents = () => {
 
     // достаем из storage все события и дату понедельника отображаемой недели
     const events = getItem('events') || []
-    console.log(events)
     const startDateTime = getDisplayedWeekStart()
     const endDateTime = shmoment(startDateTime).add('days', 7).result()
 
     // фильтруем события, оставляем только те, что входят в текущую неделю
     events
         .filter((event) => {
-            console.log(new Date(event.start))
-            console.log(startDateTime)
             return (
                 new Date(event.start) >= startDateTime &&
                 new Date(event.end) < endDateTime
@@ -282,8 +275,6 @@ export const addUpdatedEvent = (event) => {
     filterEvents.push(updatedObj)
 
     setItem('events', filterEvents)
-
-    console.log(events)
 
     onCloseEventUpdateForm()
     renderEvents()

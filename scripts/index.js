@@ -1,4 +1,5 @@
 import { renderTimescale } from './calendar/timescale.js'
+import { renderEvents } from './events/events.js'
 import { renderWeek } from './calendar/calendar.js'
 import { renderHeader } from './calendar/header.js'
 import { initNavigation } from './header/navigation.js'
@@ -8,10 +9,19 @@ import { initEventForm } from './events/createEvent.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     // инициализация всех элементов
+    renderTimescale()
+    renderEvents()
     setItem('displayedWeekStart', getStartOfWeek(new Date()))
     renderWeek()
     renderHeader()
-    renderTimescale()
     initNavigation()
     initEventForm()
 })
+
+const onStorageChange = (e) => {
+    if (e.key === 'events') {
+        renderEvents()
+    }
+}
+
+window.addEventListener('storage', onStorageChange)
