@@ -1,10 +1,13 @@
-import { getItem, setItem } from '../common/storage.js'
+// import { getItem, setItem } from '../common/storage.js'
 import { renderEvents } from './events.js'
 import { getDateTime } from '../common/time.utils.js'
 import { closeModal } from '../common/modal.js'
 
 const closeEventFormBtn = document.querySelector('.create-event__close-btn')
 const eventFormElem = document.querySelector('.event-form')
+
+export const events = []
+console.log(events)
 
 function clearEventForm() {
     eventFormElem.reset()
@@ -30,10 +33,10 @@ closeEventFormBtn.addEventListener('click', onCloseEventForm)
 // полученное событие добавляем в массив событий, что хранится в storage
 // закрываем форму
 // и запускаем перерисовку событий с помощью renderEvents
+// export const events = []
 
 function onCreateEvent(event) {
     event.preventDefault()
-    const events = getItem('events') || []
     const formData = Object.fromEntries(new FormData(eventFormElem))
     const newEvent = {
         title: formData.title || '(No title)',
@@ -66,7 +69,7 @@ function onCreateEvent(event) {
     }
 
     events.push(newEvent)
-    setItem('events', events)
+    console.log(events)
     onCloseEventForm()
     renderEvents()
 }

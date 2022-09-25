@@ -1,10 +1,12 @@
-import { getDisplayedWeekStart, getItem, setItem } from '../common/storage.js'
+import { getDisplayedWeekStart } from '../common/storage.js'
 import shmoment from '../common/shmoment.js'
 import { openPopup, closePopup } from '../common/popup.js'
 import { openModal } from '../common/modal.js'
 import { openUpdateModal } from '../common/modal.js'
 import { closeUpdateModal } from '../common/modal.js'
 import { getDateTime } from '../common/time.utils.js'
+import { events } from '../events/createEvent.js'
+import { renderWeek } from '../calendar/calendar.js'
 
 const weekElem = document.querySelector('.calendar__week')
 const deleteEventBtn = document.querySelector('.delete__event-btn')
@@ -40,6 +42,70 @@ function getDateEvent(selectedDate) {
     return year + '-' + month + '-' + day
 }
 
+function removeEventsFromCalendar() {
+    return document
+        .querySelectorAll('.event')
+        .forEach((event) => event.remove())
+    // ф-ция для удаления всех событий с календаря
+}
+
+const createEventElement = (event) => {
+    const { start, end, title, id, description } = event
+    const startEl = new Date(start)
+    const endEl = new Date(end)
+
+    const durationInMin = (startEl.getTime() - endEl.getTime()) / 1000 / 60
+
+    const eventElem = document.createElement('div')
+    eventElem.dataset.eventId = id
+    eventElem.style.top = `${startEl.getMinutes()}px`
+    eventElem.style.height = `${durationInMin}px`
+    eventElem.classList.add('event')
+
+    const eventTitle = document.createElement('div')
+    eventTitle.classList.add('event__title')
+    eventTitle.textContent = title
+
+    const eventTime = document.createElement('div')
+    eventTime.textContent = `${getTime(startEl)} - ${getTime(endEl)}`
+    eventTime.classList.add('event__time')
+
+    const eventDescription = document.createElement('div')
+    eventDescription.classList.add('event__description')
+    eventDescription.textContent = description
+
+    eventElem.append(eventTitle, eventTime, eventDescription)
+
+    return eventElem
+}
+
+export const renderEvents = () => {
+    // не забудьте удалить с календаря старые события перед добавлением новых
+
+    removeEventsFromCalendar()
+    // достаем из storage все события и дату понедельника отображаемой недели
+    // const events = getItem('events') || []
+    const startDateTime = getDisplayedWeekStart()
+    const endDateTime = shmoment(startDateTime).add('days', 7).result()
+    // фильтруем события, оставляем только те, что входят в текущую неделю
+    events
+        .filter((event) => {
+            if (
+                new Date(event.start).getTime() >= startDateTime.getTime() &&
+                new Date(event.end).getTime() < endDateTime.getTime() === true
+            )
+                return event
+        })
+        .forEach((event) => {
+            const { start } = event
+            const startEl = new Date(start)
+            const eventElem = createEventElement(event)
+            const slotElem = document.querySelector(
+                `.calendar__day[data-day="${startEl.getDate()}"] .calendar__time-slot[data-time="${startEl.getHours()}"]`
+            )
+            slotElem.append(eventElem)
+        })
+}
 function handleEventClick(event) {
     const isEvent = event.target.closest('.event')
     if (!isEvent) {
@@ -74,109 +140,25 @@ function handleEventClick(event) {
 
     openPopup(event.pageX, event.pageY)
 
-    const { eventId } = event.target.dataset
-    setItem('eventIdToDelete', `${eventId}`)
-    const events = getItem('events') || []
-
+    const eventId = isEvent.getAttribute('data-event-id')
+    // setItem('eventIdToDelete', `${eventId}`)
     const [filteredEvent] = events.filter(({ id }) => id === Number(eventId))
     popupDescriptionElem.innerHTML = `
     <p class="popup__title">${filteredEvent.title}</p>
     <p class="popup__event">${getTime(filteredEvent.start)} - ${getTime(
         filteredEvent.end
     )}</p>
-    <p class="popup__text">${filteredEvent.description}</p>
-    `
+    <p class="popup__text">${filteredEvent.description}</p>`
 }
 
-weekElem.addEventListener('click', handleEventClick)
+function onDeleteEvent(eventId) {
+    const [eventToCheck] = events.filter((el) => {
+        if ((el.id === eventId) === true);
+        return el
+    })
 
-closeEventBtn.addEventListener('click', closePopup)
-
-closeEventBtnUpdate.addEventListener('click', closeUpdateModal)
-
-function removeEventsFromCalendar() {
-    return document
-        .querySelectorAll('.event')
-        .forEach((event) => event.remove())
-    // ф-ция для удаления всех событий с календаря
-}
-
-// ф-ция создает DOM элемент события
-// событие должно позиционироваться абсолютно внутри нужной ячейки времени внутри дня
-// нужно добавить id события в дата атрибут
-// здесь для создания DOM элемента события используйте document.createElement
-
-const createEventElement = (event) => {
-    const { start, end, title, id, description } = event
-
-    const durationInMin = (end - start) / 1000 / 60
-
-    const eventElem = document.createElement('div')
-    eventElem.dataset.eventId = id
-    eventElem.style.top = `${start.getMinutes()}px`
-    eventElem.style.height = `${durationInMin}px`
-    eventElem.classList.add('event')
-
-    const eventTitle = document.createElement('div')
-    eventTitle.classList.add('event__title')
-    eventTitle.textContent = title
-
-    const eventTime = document.createElement('div')
-    eventTime.textContent = `${getTime(start)} - ${getTime(end)}`
-    eventTime.classList.add('event__time')
-
-    const eventDescription = document.createElement('div')
-    eventDescription.classList.add('event__description')
-    eventDescription.textContent = description
-
-    eventElem.append(eventTitle, eventTime, eventDescription)
-
-    return eventElem
-}
-
-// достаем из storage все события и дату понедельника отображаемой недели
-// фильтруем события, оставляем только те, что входят в текущую неделю
-// создаем для них DOM элементы с помощью createEventElement
-// для каждого события находим на странице временную ячейку (.calendar__time-slot)
-// и вставляем туда событие
-// каждый день и временная ячейка должно содержать дата атрибуты, по которым можно будет найти нужную временную ячейку для события
-// не забудьте удалить с календаря старые события перед добавлением новых
-
-export const renderEvents = () => {
-    // не забудьте удалить с календаря старые события перед добавлением новых
-
-    removeEventsFromCalendar()
-
-    // достаем из storage все события и дату понедельника отображаемой недели
-    const events = getItem('events') || []
-    const startDateTime = getDisplayedWeekStart()
-    const endDateTime = shmoment(startDateTime).add('days', 7).result()
-
-    // фильтруем события, оставляем только те, что входят в текущую неделю
-    events
-        .filter((event) => {
-            return (
-                new Date(event.start) >= startDateTime &&
-                new Date(event.end) < endDateTime
-            )
-        })
-        .forEach((event) => {
-            const { start } = event
-            const eventElem = createEventElement(event)
-            const slotElem = document.querySelector(
-                `.calendar__day[data-day="${start.getDate()}"] .calendar__time-slot[data-time="${start.getHours()}"]`
-            )
-
-            slotElem.append(eventElem)
-        })
-}
-
-function onDeleteEvent() {
-    // достаем из storage массив событий и eventIdToDelete
-    const events = getItem('events')
-    const eventIdToDelete = Number(getItem('eventIdToDelete'))
-    // удаляем из массива нужное событие и записываем в storage новый массив
-    const [eventToCheck] = events.filter((el) => el.id === eventIdToDelete)
+    console.log([eventToCheck])
+    console.log(eventToCheck.id)
     const startTimeCheck = new Date(eventToCheck.start).getTime()
     const currentTime = new Date().getTime()
     const fifteenMin = 1000 * 60 * 15
@@ -190,27 +172,75 @@ function onDeleteEvent() {
         )
         return
     }
-    const filterEvents = events.filter((el) => el.id !== eventIdToDelete)
-    console.log(filterEvents)
-    setItem('events', filterEvents)
-    // закрыть попап
+    const evIndex = events.findIndex((el) => {
+        if (el.id === eventToCheck.id) {
+            console.log(el)
+            return el
+        }
+    })
+
+    console.log(evIndex)
+
+    const deletedEvent = events.splice(evIndex, 1)
+    console.log(deletedEvent)
+    console.log(events)
+
     closePopup()
-    // перерисовать события на странице в соответствии с новым списком событий в storage (renderEvents)
+    renderWeek(events)
+}
+
+function clearEventUpdateForm() {
+    eventFormElemUpdate.reset()
+}
+
+function onCloseEventUpdateForm() {
+    clearEventUpdateForm()
+    closeUpdateModal()
+    // здесь нужно закрыть модальное окно ++;
+    // и очистить форму ++
+}
+
+const addUpdatedEvent = (event, eventId) => {
+    event.preventDefault()
+    // const events = getItem('events') || []
+    // const eventIdToDelete = Number(getItem('eventIdToDelete'))
+    // const eventIdToDelete = { eventId };
+    console.log(events)
+    const [filteredEvent] = events.filter(({ id }) => id !== String(eventId))
+    console.log([filteredEvent])
+    // const findEvent = events.find((event) => event.id === eventId)
+    const formData = Object.fromEntries(new FormData(eventFormElemUpdate))
+    const changedEvent = {
+        title: formData.title || '(No title)',
+        description: formData.description,
+        start: getDateTime(formData.date, formData.startTime),
+        end: getDateTime(formData.date, formData.endTime),
+        id: filteredEvent.id,
+    }
+    console.log(changedEvent)
+    const previousEvent = events.find((el) => el.id === changedEvent.id)
+    console.log(previousEvent)
+    const updatedObj = {
+        ...previousEvent,
+        ...changedEvent,
+    }
+    console.log(updatedObj)
+    const eventIndex = events.findIndex((el) => el.id === changedEvent.id)
+    console.log(eventIndex)
+    const updatedEvents = events.splice(eventIndex, 1, updatedObj)
+
+    console.log(updatedEvents)
+
+    onCloseEventUpdateForm()
+    // renderWeek(events)
     renderEvents()
 }
 
-deleteEventBtn.addEventListener('click', onDeleteEvent)
-
-export const updateEvent = (event) => {
+const updateEvent = (event, eventId) => {
     openUpdateModal(event.pageX, event.pageY)
     closePopup()
-    const events = getItem('events') || []
 
-    const eventIdToDelete = getItem('eventIdToDelete')
-
-    const [filteredEvent] = events.filter(
-        ({ id }) => id !== String(eventIdToDelete)
-    )
+    const [filteredEvent] = events.filter(({ id }) => id !== String(eventId))
 
     document.querySelector('.event-form-update__field[type="text"]').value =
         filteredEvent.title
@@ -226,58 +256,14 @@ export const updateEvent = (event) => {
     ).value = filteredEvent.description
 }
 
+weekElem.addEventListener('click', handleEventClick)
+
+closeEventBtn.addEventListener('click', closePopup)
+
+closeEventBtnUpdate.addEventListener('click', closeUpdateModal)
+
+deleteEventBtn.addEventListener('click', onDeleteEvent)
+
 updateEventBtn.addEventListener('click', updateEvent)
-
-function clearEventUpdateForm() {
-    eventFormElemUpdate.reset()
-}
-
-function onCloseEventUpdateForm() {
-    clearEventUpdateForm()
-    closeUpdateModal()
-    // здесь нужно закрыть модальное окно ++;
-    // и очистить форму ++
-}
-
-export const addUpdatedEvent = (event) => {
-    event.preventDefault()
-    const events = getItem('events') || []
-    const eventIdToDelete = Number(getItem('eventIdToDelete'))
-    const [filteredEvent] = events.filter(
-        ({ id }) => id !== String(eventIdToDelete)
-    )
-
-    const formData = Object.fromEntries(new FormData(eventFormElemUpdate))
-    const changedEvent = {
-        title: formData.title || '(No title)',
-        description: formData.description,
-        start: getDateTime(formData.date, formData.startTime),
-        end: getDateTime(formData.date, formData.endTime),
-        id: filteredEvent.id,
-    }
-
-    const previousEvent = events.find((el) => el.id === changedEvent.id)
-
-    console.log(previousEvent)
-
-    const updatedObj = {
-        ...previousEvent,
-        ...changedEvent,
-    }
-
-    console.log(updatedObj)
-
-    const filterEvents = events.filter(
-        (el) => el.id !== Number(previousEvent.id)
-    )
-    console.log(filterEvents)
-
-    filterEvents.push(updatedObj)
-
-    setItem('events', filterEvents)
-
-    onCloseEventUpdateForm()
-    renderEvents()
-}
 
 submitButtonUpdate.addEventListener('click', addUpdatedEvent)
