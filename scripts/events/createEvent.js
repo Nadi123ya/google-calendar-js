@@ -7,7 +7,6 @@ const closeEventFormBtn = document.querySelector('.create-event__close-btn')
 const eventFormElem = document.querySelector('.event-form')
 
 export const events = []
-console.log(events)
 
 function clearEventForm() {
     eventFormElem.reset()
@@ -69,7 +68,6 @@ function onCreateEvent(event) {
     }
 
     events.push(newEvent)
-    console.log(events)
     onCloseEventForm()
     renderEvents()
 }

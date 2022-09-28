@@ -10,6 +10,7 @@ import { initEventForm } from './events/createEvent.js'
 document.addEventListener('DOMContentLoaded', () => {
     // инициализация всех элементов
     renderTimescale()
+    renderEvents()
     setItem('displayedWeekStart', getStartOfWeek(new Date()))
     renderWeek()
     renderHeader()
