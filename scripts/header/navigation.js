@@ -10,16 +10,11 @@ const displayedMonthElem = document.querySelector(
     '.navigation__displayed-month'
 )
 
-// отрисовать месяц, к которому относиться текущая неделя (getDisplayedMonth)
-// вставить в .navigation__displayed-month
-
 function renderCurrentMonth() {
     const date = getDisplayedWeekStart()
     displayedMonthElem.innerHTML = getDisplayedMonth(date)
 }
 
-// при переключении недели обновите displayedWeekStart в storage ++
-// и перерисуйте все необходимые элементы страницы (renderHeader, renderWeek, renderCurrentMonth) ++
 const onChangeWeek = (event) => {
     const switchArrow = event.target.closest('button')
 

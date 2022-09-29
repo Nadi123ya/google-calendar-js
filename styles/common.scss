@@ -1,53 +1,52 @@
 .button {
-  height: 40px;
-  border-radius: 8px;
-  border: 1px solid $border-color-grey;
-  outline: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid $border-color-grey;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .icon-button {
-  outline: none;
-  border: none;
-  cursor: pointer;
-  background: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background: transparent;
 }
 
 .modal {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1440px;
-  height: 100vh;
-  background-color: $modal-background-color;
-  z-index: 10;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1440px;
+    height: 100vh;
+    background-color: $modal-background-color;
+    z-index: 10;
 
-  &__content {
-    background: $color-white;
-    padding: 16px;
-    border: 1px solid $border-color-grey;
-    border-radius: 8px;
-  }
+    &__content {
+        background: $color-white;
+        padding: 16px;
+        border: 1px solid $border-color-grey;
+        border-radius: 8px;
+    }
 }
 
 .overlays {
-  position: absolute;
-  z-index: 1;
+    position: absolute;
+    z-index: 1;
 }
 
 .popup {
-  
-  &__content {
-    background-color: $background-color-white;
-    padding: 16px;
-    border: 1px solid $border-color-grey;
-    border-radius: 8px;
-  }
+    &__content {
+        background-color: $background-color-white;
+        padding: 16px;
+        border: 1px solid $border-color-grey;
+        border-radius: 8px;
+    }
 }
 
 .hidden {
-  display: none;
+    display: none;
 }

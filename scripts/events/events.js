@@ -46,7 +46,6 @@ function removeEventsFromCalendar() {
     return document
         .querySelectorAll('.event')
         .forEach((event) => event.remove())
-    // ф-ция для удаления всех событий с календаря
 }
 
 const createEventElement = (event) => {
@@ -158,14 +157,10 @@ function onDeleteEvent(event) {
     const popupDesc = document.querySelector('.popup__description')
     const popupId = popupDesc.querySelector('.popup__id')
     const eventId = popupId.getAttribute('data-event-id')
-    console.log(eventId)
     const [eventToCheck] = events.filter((el) => {
-        console.log(Number(eventId))
-        console.log(el.id)
         if ((el.id === Number(eventId)) === true);
         return el
     })
-    console.log(eventToCheck)
     const startTimeCheck = new Date(eventToCheck.start).getTime()
     const currentTime = new Date().getTime()
     const fifteenMin = 1000 * 60 * 15
@@ -179,15 +174,14 @@ function onDeleteEvent(event) {
         )
         return
     }
-    console.log(events)
 
-    const newEvents = events.filter((el) => {
-        return el.id !== eventToCheck.id
+    const evIndex = events.findIndex((el) => {
+        if ((el.id === Number(eventId)) === true) return el
     })
-    console.log(newEvents)
+    events.splice(evIndex, 1)
+
     closePopup()
-    // renderEvents(newEvents)
-    renderWeek(newEvents)
+    renderWeek()
 }
 
 function clearEventUpdateForm() {
@@ -197,28 +191,23 @@ function clearEventUpdateForm() {
 function onCloseEventUpdateForm() {
     clearEventUpdateForm()
     closeUpdateModal()
-    // здесь нужно закрыть модальное окно ++;
-    // и очистить форму ++
 }
 
 const addUpdatedEvent = (event) => {
     event.preventDefault()
-    console.log(events)
-    const isUpdateBtn = event.target.closest('.event-form__submit-btn-update')
-    if (!isUpdateBtn) {
+    const isSubmitUpdateBtn = event.target.closest(
+        '.event-form__submit-btn-update'
+    )
+    if (!isSubmitUpdateBtn) {
         return
     }
     const popupDesc = document.querySelector('.popup__description')
     const popupId = popupDesc.querySelector('.popup__id')
     const eventId = popupId.getAttribute('data-event-id')
-    console.log(eventId)
+
     const [filteredEvent] = events.filter(({ id }) => {
-        console.log(id)
-        console.log(Number(eventId))
         return id === Number(eventId)
     })
-    console.log([filteredEvent])
-    // const findEvent = events.find((event) => event.id === eventId)
     const formData = Object.fromEntries(new FormData(eventFormElemUpdate))
     const changedEvent = {
         title: formData.title || '(No title)',
@@ -227,32 +216,34 @@ const addUpdatedEvent = (event) => {
         end: getDateTime(formData.date, formData.endTime),
         id: filteredEvent.id,
     }
-    console.log(changedEvent)
     const previousEvent = events.find((el) => el.id === changedEvent.id)
-    console.log(previousEvent)
     const updatedObj = {
         ...previousEvent,
         ...changedEvent,
     }
-    console.log(updatedObj)
 
-    const newEvents = events.filter((el) => {
-        return el.id !== changedEvent.id
+    const evIndex = events.findIndex((el) => {
+        if ((el.id === Number(eventId)) === true) return el
     })
-
-    const updatedEvents = newEvents.concat(updatedObj)
-    console.log(updatedEvents)
+    events.splice(evIndex, 1, updatedObj)
 
     onCloseEventUpdateForm()
-    renderWeek(updatedEvents)
-    // renderEvents()
+    renderWeek()
 }
 
-const updateEvent = (event, eventId) => {
+const updateEvent = (event) => {
     openUpdateModal(event.pageX, event.pageY)
     closePopup()
-
-    const [filteredEvent] = events.filter(({ id }) => id !== String(eventId))
+    const isUpdateBtn = event.target.closest('.update__event-btn')
+    if (!isUpdateBtn) {
+        return
+    }
+    const popupDesc = document.querySelector('.popup__description')
+    const popupId = popupDesc.querySelector('.popup__id')
+    const eventId = popupId.getAttribute('data-event-id')
+    const [filteredEvent] = events.filter(({ id }) => {
+        return id === Number(eventId)
+    })
 
     document.querySelector('.event-form-update__field[type="text"]').value =
         filteredEvent.title

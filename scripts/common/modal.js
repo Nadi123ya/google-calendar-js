@@ -1,10 +1,6 @@
 const modalElem = document.querySelector('.modal')
 const modalUpdateElem = document.querySelector('.modal__update')
 
-// опишите ф-ции openModal и closeModal
-// модальное окно работает похожим на попап образом
-// отличие в том, что попап отображается в месте клика, а модальное окно - по центру экрана
-
 export function openModal() {
     modalElem.classList.remove('hidden')
 }

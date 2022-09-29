@@ -1,22 +1,19 @@
-// стили отображаемого в календаре события
 .event {
-  background-color: #6c97e6;
-  color: #ffffff;
-  text-align: center;
+    background-color: #6c97e6;
+    color: #ffffff;
+    text-align: center;
 
+    &__title {
+        margin-bottom: 5px;
+        font-size: 11px;
+        font-weight: 700;
+    }
 
-  &__title {
-    margin-bottom: 5px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  &__time {
-    margin-bottom: 5px;
-    font-size: 10px;
-  }
-  &__description {
-    font-size: 8px;
-  }
+    &__time {
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+    &__description {
+        font-size: 8px;
+    }
 }
-
